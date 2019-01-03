@@ -1,0 +1,7 @@
+## Interface: 20400
+## Title: |cffa0f6aaSlyFox|r
+## Notes: A combopoint and energy tracker for WOW TBC 2.4.3
+## Author: null
+## Version: 1.0
+
+SlyFox.lua
