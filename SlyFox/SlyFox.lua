@@ -22,7 +22,7 @@
 	local smoothBars = true
 	local smoothTime = 0.1
 
-	local showText = false
+	local showText = true
 	local fontSize = 20
 
 	local fadeFrame = true
