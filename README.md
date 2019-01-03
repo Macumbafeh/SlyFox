@@ -4,8 +4,8 @@
 
 ## What is it
 
-SlyFox is a Lightweight, minimalistic energy and combopoint tracker addon for Wow TBC 2.4.3.
-It also features energy tick tracking, bar smoothing and autohiding out of combat.
+SlyFox is a lightweight and minimalistic energy and combopoint tracker addon for Wow TBC 2.4.3.
+It also features energy tick tracking, bar smoothing and autohiding when out of combat with no target.
 
 ## How to configure
 
