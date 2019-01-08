@@ -311,7 +311,7 @@
 		SlyFox:RegisterEvent("PLAYER_TARGET_CHANGED")
 		SlyFox:RegisterEvent("PLAYER_LOGIN")
 
-		if StartFrameFade then
+		if fadeFrame then
 			SlyFox:RegisterEvent("UPDATE_STEALTH")
 			SlyFox:RegisterEvent("PLAYER_REGEN_ENABLED")
 			SlyFox:RegisterEvent("PLAYER_REGEN_DISABLED")
