@@ -14,4 +14,17 @@ To do so, simply open the file in your favorite text editor, change what you wan
 
 ## How to install
 
-Go to Releases in https://github.com/nullfoxh/SlyFox/releases and download SlyFox.zip. Extract it to your World of Warcraft/Interface/AddOns folder and you're done! Once you're done the path should look like World of Warcraft/Interface/AddOns/SlyFox/SlyFox.toc.
+Go to Releases in https://github.com/nullfoxh/SlyFox/releases and download SlyFox.zip.  Extract it to your World of Warcraft/Interface/AddOns folder and you're done!  The path should be: World of Warcraft/Interface/AddOns/SlyFox/SlyFox.toc.
+
+
+## Future plans
+
+Once I'm done with my nameplate buffs addon, I'd like to make an in-game, CLI based config and possibly add aura bars for rupture, SnD and such.
+
+
+## Latest changes - v1.1
+
+* Fixed frame layers.
+* Improved frame fading
+* Frame will now fade out when dead
+

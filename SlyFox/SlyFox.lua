@@ -29,14 +29,13 @@
 	local fadeInTime = 0.07
 	local fadeOutTime = 0.15
 
-
 	energycolor = { 255/255, 225/255, 26/255}
 	cpcolors = {
-			[1] = { 208/255, 120/255, 72/255 },
-			[2] = { 240/255, 190/255, 89/255 },
-			[3] = { 216/255, 231/255, 92/255 },
-			[4] = { 139/255, 243/255, 83/255 },
-			[5] = { 60/255, 255/255, 73/255 },
+		[1] = { 208/255, 120/255, 72/255 },
+		[2] = { 240/255, 190/255, 89/255 },
+		[3] = { 216/255, 231/255, 92/255 },
+		[4] = { 139/255, 243/255, 83/255 },
+		[5] = { 60/255, 255/255, 73/255 },
 	}
 
 	local font = "Interface\\AddOns\\SlyFox\\homespun.ttf"
@@ -44,14 +43,11 @@
 
 	---------------------------------------------------------------------------------------------
 
-	local lastTick = 0
-	local nextTick = 0
-	local curEnergy, maxEnergy, cpoints, inCombat, smoothing
-	local stealthed, hasTarget, powerType, class, firstEvent
-
-	local GetTime, MAX_COMBO_POINTS, min
-		= GetTime, MAX_COMBO_POINTS, math.min
-	
+	local lastTick, nextTick, points = 0, 0, 0
+	local curEnergy, maxEnergy, inCombat, smoothing
+	local stealthed, hasTarget, powerType, class, firstEvent, isDead
+	local GetTime, UnitIsDeadOrGhost, MAX_COMBO_POINTS, min
+		= GetTime, UnitIsDeadOrGhost, MAX_COMBO_POINTS, math.min
 	local UnitMana, UnitManaMax, UnitPowerType, IsStealthed, GetComboPoints, UnitCanAttack
 		= UnitMana, UnitManaMax, UnitPowerType, IsStealthed, GetComboPoints, UnitCanAttack
 
@@ -74,6 +70,7 @@
 
 		-- energy
 		local e = CreateFrame("Frame", nil, SlyFox)
+		e:SetFrameStrata("BACKGROUND")
 		e:SetWidth(frameWidth)
 		e:SetHeight(energyHeight)
 		e:SetPoint("CENTER", UIParent, "CENTER", framePos[1], framePos[2])
@@ -123,9 +120,10 @@
 			local c = CreateFrame("Frame", nil, SlyFox)
 			c:SetWidth((frameWidth+MAX_COMBO_POINTS-1)/MAX_COMBO_POINTS)
 			c:SetHeight(comboHeight)
+			c:SetFrameStrata("BACKGROUND")
 
 			c.bg = CreateTex(c, 0, 0, 0, 0, "BACKGROUND")
-			c.bd = CreateTex(c, 1, -1, -1, 1, "BORDER", texture)
+			c.bd = CreateTex(c, 1, -1, -1, 1, "ARTWORK", texture)
 			c.fg = CreateTex(c, 1, -1, -1, 1, "ARTWORK", texture)
 			c.fg:Hide()
 	 
@@ -234,6 +232,9 @@
 		elseif event == "UPDATE_STEALTH" then
 			stealthed = IsStealthed()
 
+		elseif event == "PLAYER_DEAD" or event == "PLAYER_ALIVE" or "PLAYER_UNGHOST" then
+			isDead = UnitIsDeadOrGhost("player")
+
 		elseif event == "UNIT_DISPLAYPOWER" and unit == "player" then
 			powerType = UnitPowerType("player")
 			if powerType == 3 then
@@ -245,10 +246,16 @@
 		end
 
 		-- show/hide
-		if powerType == 3 and (not fadeFrame or (points and points > 0) or stealthed or inCombat or hasTarget or curEnergy ~= maxEnergy) then
-			StartFrameFade(SlyFox, true)
-		else
+		if class == "DRUID" and powerType ~= 3 then
 			StartFrameFade(SlyFox, false)
+		elseif fadeFrame then
+			if not isDead and (points > 0 or stealthed or inCombat or hasTarget or curEnergy ~= maxEnergy) then
+				StartFrameFade(SlyFox, true)
+			else
+				StartFrameFade(SlyFox, false)
+			end
+		else
+			StartFrameFade(SlyFox, true)
 		end
 	end
 
@@ -301,7 +308,7 @@
 		end
 
 		powerType = UnitPowerType("player")
-		curEnergy, maxEnergy = UnitMana("player"), UnitManaMax("player") or 100
+		curEnergy, maxEnergy = UnitMana("player"), UnitManaMax("player")
 		CreateFrames()
 
 		SlyFox:SetScript("OnEvent", OnEvent)
@@ -312,6 +319,9 @@
 		SlyFox:RegisterEvent("PLAYER_LOGIN")
 
 		if fadeFrame then
+			SlyFox:RegisterEvent("PLAYER_DEAD")
+			SlyFox:RegisterEvent("PLAYER_ALIVE")
+			SlyFox:RegisterEvent("PLAYER_UNGHOST")
 			SlyFox:RegisterEvent("UPDATE_STEALTH")
 			SlyFox:RegisterEvent("PLAYER_REGEN_ENABLED")
 			SlyFox:RegisterEvent("PLAYER_REGEN_DISABLED")
