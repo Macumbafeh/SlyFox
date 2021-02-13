@@ -1,3 +1,9 @@
+# SLYFOX HAS BEEN DISCONTINUED
+
+Check out the successor SlyBars instead, features better config options!
+https://github.com/nullfoxh/SlyBars-TBC
+
+
 # SlyFox
 
 ![Screenshot](SlyFox.jpg)
